@@ -1,0 +1,35 @@
+{
+  "nijanth.al23@bitsathy.ac.in": {
+    "gamesPlayed": 0,
+    "wins": 0,
+    "createdAt": "2026-09-10T08:23:55.001610+00:00",
+    "id": "106892717314384374940",
+    "email": "nijanth.al23@bitsathy.ac.in",
+    "name": "NIJANTH R",
+    "picture": "https://lh3.googleusercontent.com/a/ACg8ocJ7wTT5g_9C0CMZ3A_5xzw7K2I081q1KX8OF2XojSWmbdqSeXWr=s96-c",
+    "provider": "google",
+    "lastLogin": "2026-09-10T10:19:36.111256+00:00"
+  },
+  "srinijan2405@gmail.com": {
+    "gamesPlayed": 0,
+    "wins": 0,
+    "createdAt": "2026-09-10T10:18:48.594405+00:00",
+    "id": "102021438386707700219",
+    "email": "srinijan2405@gmail.com",
+    "name": "N\u026a\u1d0a\u1d00\u0274\u1d1b\u029c R",
+    "picture": "https://lh3.googleusercontent.com/a/ACg8ocJNmbGdko11-IOOJtQsbPPXf8GMOa9Td0ED0czftLW_V7AzzQQU=s96-c",
+    "provider": "google",
+    "lastLogin": "2026-09-10T10:18:48.594405+00:00"
+  },
+  "guest_1789036145446@gamehub.local": {
+    "id": "guest_1789036145446",
+    "name": "\ud83c\udfae ApexViper_51",
+    "email": "guest_1789036145446@gamehub.local",
+    "picture": null,
+    "provider": "guest",
+    "gamesPlayed": 0,
+    "wins": 0,
+    "createdAt": "2026-09-10T10:29:05.446446+00:00",
+    "lastLogin": "2026-09-10T10:29:05.446446+00:00"
+  }
+}
