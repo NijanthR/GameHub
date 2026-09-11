@@ -127,6 +127,29 @@
   box-shadow: 0 4px 16px rgba(124,58,237,0.3);
 }
 
+.btn-dash-admin {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 50px;
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  background: rgba(124, 58, 237, 0.12);
+  color: #c084fc;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.25s ease;
+}
+
+.btn-dash-admin:hover {
+  background: rgba(124, 58, 237, 0.28);
+  border-color: #a78bfa;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+}
+
 .dash-guest-nav-group {
   display: flex;
   align-items: center;
@@ -860,3 +883,57 @@
   animation: piece-float 3s ease-in-out infinite;
   animation-delay: 1.5s;
 }
+
+/* ── Water Sort Card Wallpaper & Icon ── */
+.watersort-wallpaper-icon {
+  position: relative;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.watersort-card-wallpaper {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.game-card:hover .watersort-card-wallpaper {
+  transform: scale(1.08);
+}
+
+.watersort-card-wallpaper-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(6, 12, 28, 0.25) 0%,
+    rgba(6, 12, 28, 0.05) 40%,
+    rgba(6, 12, 28, 0.75) 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 16px 20px;
+  pointer-events: none;
+}
+
+.watersort-card-flask {
+  font-size: 34px;
+  line-height: 1;
+  filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.9));
+  animation: piece-float 3.2s ease-in-out infinite;
+  display: block;
+}
+
+.watersort-card-sparkle {
+  font-size: 30px;
+  line-height: 1;
+  filter: drop-shadow(0 0 14px rgba(168, 85, 247, 0.9));
+  animation: piece-float 3.2s ease-in-out infinite;
+  animation-delay: 1.6s;
+  display: block;
+}
+

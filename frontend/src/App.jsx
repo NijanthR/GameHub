@@ -11,6 +11,7 @@ import FlowPuzzle from './pages/FlowPuzzle';
 import FlappyBird from './pages/FlappyBird';
 import Sudoku from './pages/Sudoku';
 import WaterSort from './pages/WaterSort';
+import AdminPortal from './pages/AdminPortal';
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
         <Routes>
           {/* Public Authentication Route */}
           <Route path="/login" element={<Login />} />
+
+          {/* Admin Telemetry & Activity Monitoring Portal */}
+          <Route path="/admin" element={<AdminPortal />} />
 
           {/* Protected Routes (Requires Login / Auth to access) */}
           <Route

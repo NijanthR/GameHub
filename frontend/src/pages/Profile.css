@@ -79,6 +79,29 @@
   letter-spacing: 0.5px;
   color: #c4b5fd;
 }
+.profile-nav-right-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.profile-admin-top-btn {
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  color: #c084fc;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+.profile-admin-top-btn:hover {
+  background: rgba(124, 58, 237, 0.3);
+  border-color: #a78bfa;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
 .profile-logout-top-btn {
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(239, 68, 68, 0.3);

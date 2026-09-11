@@ -214,10 +214,7 @@ const games = [
           alt="Sudoku AI"
           className="sudoku-card-wallpaper"
         />
-        <div className="sudoku-card-wallpaper-overlay">
-          <span className="sudoku-card-digit">9</span>
-          <span className="sudoku-card-sparkle">✨</span>
-        </div>
+        <div className="sudoku-card-wallpaper-overlay" />
       </div>
     ),
   },
@@ -228,56 +225,13 @@ const games = [
     path: '/watersort',
     badge: 'PUZZLE · 50+ LEVELS · ANIMATED',
     icon: (
-      <div className="game-icon watersort-icon">
-        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="wsBlue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#60a5fa"/>
-              <stop offset="100%" stopColor="#2563eb"/>
-            </linearGradient>
-            <linearGradient id="wsYellow" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#fef08a"/>
-              <stop offset="100%" stopColor="#eab308"/>
-            </linearGradient>
-            <linearGradient id="wsPink" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#f472b6"/>
-              <stop offset="100%" stopColor="#ec4899"/>
-            </linearGradient>
-            <linearGradient id="wsGreen" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#bef264"/>
-              <stop offset="100%" stopColor="#84cc16"/>
-            </linearGradient>
-            <linearGradient id="wsPurple" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#c084fc"/>
-              <stop offset="100%" stopColor="#9333ea"/>
-            </linearGradient>
-          </defs>
-
-          {/* Left Bottle */}
-          <rect x="15" y="32" width="22" height="68" rx="8" stroke="rgba(255,255,255,0.85)" strokeWidth="2.5" fill="rgba(255,255,255,0.06)"/>
-          <rect x="17" y="82" width="18" height="16" rx="6" fill="url(#wsPink)"/>
-          <rect x="17" y="66" width="18" height="16" fill="url(#wsGreen)"/>
-          <rect x="17" y="50" width="18" height="16" fill="url(#wsYellow)"/>
-          <rect x="17" y="34" width="18" height="16" fill="url(#wsPurple)"/>
-
-          {/* Middle Receiving Bottle */}
-          <rect x="49" y="32" width="22" height="68" rx="8" stroke="rgba(255,255,255,0.85)" strokeWidth="2.5" fill="rgba(255,255,255,0.06)"/>
-          <rect x="51" y="50" width="18" height="48" rx="6" fill="url(#wsBlue)"/>
-          {/* Splash particles */}
-          <circle cx="56" cy="46" r="2" fill="#93c5fd"/>
-          <circle cx="64" cy="44" r="1.5" fill="#93c5fd"/>
-
-          {/* Pouring Liquid Stream from Top Right */}
-          <path d="M 83 24 L 60 50" stroke="#2563eb" strokeWidth="4.5" strokeLinecap="round"/>
-
-          {/* Tilted Source Bottle on Top Right */}
-          <g transform="translate(76, 4) rotate(42)">
-            <rect x="0" y="0" width="20" height="52" rx="7" stroke="rgba(255,255,255,0.9)" strokeWidth="2.5" fill="rgba(255,255,255,0.08)"/>
-            <rect x="2" y="32" width="16" height="18" rx="5" fill="url(#wsPurple)"/>
-            <rect x="2" y="16" width="16" height="16" fill="url(#wsGreen)"/>
-            <rect x="2" y="2" width="16" height="14" fill="url(#wsBlue)"/>
-          </g>
-        </svg>
+      <div className="game-icon watersort-icon watersort-wallpaper-icon">
+        <img
+          src="/watersort-wallpaper.jpg"
+          alt="Water Sort Puzzle"
+          className="watersort-card-wallpaper"
+        />
+        <div className="watersort-card-wallpaper-overlay" />
       </div>
     ),
   },
@@ -309,16 +263,26 @@ export default function Dashboard() {
       <header className="dash-header">
         <div className="logo">
           <svg className="logo-icon" viewBox="0 0 40 40" fill="none">
-            <rect width="40" height="40" rx="10" fill="url(#lg1)"/>
-            <path d="M8 20c0-2 1-3 2.5-3s2.5 1 2.5 3v6h2v-6c0-4-2-6-4.5-6S6 16 6 20v6h2v-6z" fill="white"/>
-            <path d="M22 14h-4v12h4c3.3 0 6-2.7 6-6s-2.7-6-6-6zm0 10h-2v-8h2c2.2 0 4 1.8 4 4s-1.8 4-4 4z" fill="white"/>
-            <circle cx="32" cy="16" r="2" fill="#ec4899"/>
             <defs>
-              <linearGradient id="lg1" x1="0" y1="0" x2="40" y2="40">
-                <stop offset="0%" stopColor="#7c3aed"/>
-                <stop offset="100%" stopColor="#4f46e5"/>
+              <linearGradient id="dashLogoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#7c3aed" />
+                <stop offset="100%" stopColor="#4f46e5" />
               </linearGradient>
             </defs>
+            <rect width="40" height="40" rx="10" fill="url(#dashLogoGrad)"/>
+            <path
+              d="M11 13C7 13 4 16.5 4 21.5C4 25.5 7 29 10 29C11.8 29 13.2 27.8 14.6 26L17.5 22.5H22.5L25.4 26C26.8 27.8 28.2 29 30 29C33 29 36 25.5 36 21.5C36 16.5 33 13 29 13H11Z"
+              fill="rgba(255,255,255,0.15)"
+              stroke="#ffffff"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path d="M10 17V22M7.5 19.5H12.5" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+            <circle cx="28.5" cy="17.5" r="1.5" fill="#38bdf8" />
+            <circle cx="31.5" cy="20.5" r="1.5" fill="#ec4899" />
+            <circle cx="25.5" cy="20.5" r="1.5" fill="#facc15" />
+            <circle cx="28.5" cy="23.5" r="1.5" fill="#4ade80" />
           </svg>
           <div>
             <span className="logo-name"><span>Game</span>Hub</span>

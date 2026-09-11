@@ -207,13 +207,15 @@ export default function Profile() {
           <div className="hero-details">
             <div className="hero-name-row">
               {editingName ? (
-                <form onSubmit={handleSaveName} className="name-edit-form">
+                <form onSubmit={handleSaveName} className="name-edit-form" autoComplete="off">
                   <input
                     type="text"
+                    name="profile_display_name"
                     value={customName}
                     onChange={(e) => setCustomName(e.target.value)}
                     maxLength={20}
                     autoFocus
+                    autoComplete="off"
                     className="name-edit-input"
                   />
                   <button type="submit" className="name-save-btn">Save</button>
@@ -480,7 +482,7 @@ export default function Profile() {
                 </div>
                 <div className="gstat-item">
                   <span className="gstat-lbl">AI SOLVER</span>
-                  <span className="gstat-val stat-blue">BFS Engine</span>
+                  <span className="gstat-val stat-blue">A* Solver</span>
                 </div>
               </div>
             </div>

@@ -146,9 +146,27 @@ export default function Login() {
       <header className="auth-nav-header">
         <Link to="/" className="auth-nav-brand">
           <div className="auth-brand-logo-mark">
-            <svg viewBox="0 0 28 28" fill="none" width="20" height="20">
-              <path d="M14 3L25 9.5V18.5L14 25L3 18.5V9.5L14 3Z" stroke="#818cf8" strokeWidth="2" fill="rgba(129, 140, 248, 0.15)" />
-              <path d="M14 9V19M9 14H19" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+            <svg viewBox="0 0 32 32" fill="none" width="22" height="22">
+              <defs>
+                <linearGradient id="brandLogoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#818cf8" />
+                  <stop offset="100%" stopColor="#c084fc" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M9 10C5.5 10 3 13 3 17.5C3 21 5.5 24 8 24C9.5 24 10.8 23 12 21.5L14.5 18.5H17.5L20 21.5C21.2 23 22.5 24 24 24C26.5 24 29 21 29 17.5C29 13 26.5 10 23 10H9Z"
+                fill="url(#brandLogoGrad)"
+                fillOpacity="0.25"
+                stroke="url(#brandLogoGrad)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M8 14V18M6 16H10" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
+              <circle cx="23" cy="14.5" r="1.2" fill="#38bdf8" />
+              <circle cx="25.5" cy="17" r="1.2" fill="#ec4899" />
+              <circle cx="20.5" cy="17" r="1.2" fill="#facc15" />
+              <circle cx="23" cy="19.5" r="1.2" fill="#4ade80" />
             </svg>
           </div>
           <span className="auth-brand-title">Game<span className="brand-highlight">Hub</span></span>
@@ -266,18 +284,22 @@ export default function Login() {
                   <span className="separator-line" />
                 </div>
 
-                <form className="auth-credential-form" onSubmit={handleEmailAuth}>
+                <form className="auth-credential-form" onSubmit={handleEmailAuth} autoComplete="off">
                   <div className="form-field-group">
                     <label className="form-label" htmlFor="signin-email">Email Address</label>
                     <div className="form-input-shell">
                       <input
                         id="signin-email"
+                        name="gamehub_login_email"
                         type="email"
                         placeholder="name@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="form-control"
-                        autoComplete="email"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="none"
+                        spellCheck="false"
                         required
                       />
                     </div>
@@ -297,12 +319,13 @@ export default function Login() {
                     <div className="form-input-shell password-shell">
                       <input
                         id="signin-password"
+                        name="gamehub_login_password"
                         type={showPassword ? 'text' : 'password'}
                         placeholder="••••••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className="form-control"
-                        autoComplete="current-password"
+                        autoComplete="new-password"
                         required
                       />
                       <button
@@ -379,18 +402,19 @@ export default function Login() {
                   <span className="separator-line" />
                 </div>
 
-                <form className="auth-credential-form" onSubmit={handleEmailAuth}>
+                <form className="auth-credential-form" onSubmit={handleEmailAuth} autoComplete="off">
                   <div className="form-field-group">
                     <label className="form-label" htmlFor="signup-name">Full Name</label>
                     <div className="form-input-shell">
                       <input
                         id="signup-name"
+                        name="gamehub_signup_name"
                         type="text"
                         placeholder="John Doe"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="form-control"
-                        autoComplete="name"
+                        autoComplete="off"
                         required
                       />
                     </div>
@@ -401,12 +425,16 @@ export default function Login() {
                     <div className="form-input-shell">
                       <input
                         id="signup-email"
+                        name="gamehub_signup_email"
                         type="email"
                         placeholder="name@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="form-control"
-                        autoComplete="email"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="none"
+                        spellCheck="false"
                         required
                       />
                     </div>
@@ -417,6 +445,7 @@ export default function Login() {
                     <div className="form-input-shell password-shell">
                       <input
                         id="signup-password"
+                        name="gamehub_signup_password"
                         type={showPassword ? 'text' : 'password'}
                         placeholder="••••••••••••"
                         value={password}
@@ -438,7 +467,7 @@ export default function Login() {
                           </svg>
                         ) : (
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                            <path d="M1 12s4-8 11-8 11 8-4 8-11 8-11-8-11-8z" />
                             <circle cx="12" cy="12" r="3" />
                           </svg>
                         )}
@@ -471,7 +500,7 @@ export default function Login() {
                   </div>
                 </div>
 
-                <form className="auth-credential-form" onSubmit={handleGuestPlay}>
+                <form className="auth-credential-form" onSubmit={handleGuestPlay} autoComplete="off">
                   <div className="avatar-pick-block">
                     <label className="form-label">Choose Avatar</label>
                     <div className="avatar-capsule-row">
@@ -503,12 +532,14 @@ export default function Login() {
                       <span className="guest-avatar-prefix">{selectedAvatar}</span>
                       <input
                         id="guest-tag-field"
+                        name="gamehub_guest_nickname"
                         type="text"
                         placeholder="e.g. NeonKnight_42"
                         value={guestTag}
                         onChange={(e) => setGuestTag(e.target.value)}
                         maxLength={18}
                         className="form-control"
+                        autoComplete="off"
                         required
                       />
                     </div>

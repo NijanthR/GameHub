@@ -1,5 +1,6 @@
 // Centralized Real-time Gameplay Stats Service
 // Tracks accurate player metrics and history across all games
+import { trackGameEnd } from './activityTracker';
 
 export function getPlayerStats(userId = 'default') {
   const key = `gamehub_stats_${userId}`;
@@ -106,6 +107,7 @@ export function recordTttOutcome(userId = 'default', { outcome, mode, difficulty
 
   stats.history = [record, ...(stats.history || []).slice(0, 19)]; // Keep latest 20
   savePlayerStats(userId, stats);
+  trackGameEnd('Tic Tac Toe', { outcome, details: record.details });
   return stats;
 }
 
@@ -135,6 +137,7 @@ export function record2048Outcome(userId = 'default', { score, highestTile, reac
 
   stats.history = [record, ...(stats.history || []).slice(0, 19)];
   savePlayerStats(userId, stats);
+  trackGameEnd('2048', { outcome: record.outcome, score, details: record.details });
   return stats;
 }
 
@@ -164,6 +167,7 @@ export function recordChessOutcome(userId = 'default', { outcome, mode, difficul
 
   stats.history = [record, ...(stats.history || []).slice(0, 19)];
   savePlayerStats(userId, stats);
+  trackGameEnd('Chess', { outcome, moves: totalMoves, details: record.details });
   return stats;
 }
 
@@ -184,6 +188,7 @@ export function recordFlowOutcome(userId = 'default', { packTitle, levelId, move
 
   stats.history = [record, ...(stats.history || []).slice(0, 19)];
   savePlayerStats(userId, stats);
+  trackGameEnd('Color Flow', { outcome: 'WIN', moves, stars, details: record.details });
   return stats;
 }
 
@@ -209,6 +214,7 @@ export function recordFlappyOutcome(userId = 'default', { score, bestScore, coin
 
   stats.history = [record, ...(stats.history || []).slice(0, 19)];
   savePlayerStats(userId, stats);
+  trackGameEnd('Floppy Bird', { outcome: record.outcome, score, details: record.details });
   return stats;
 }
 
@@ -243,6 +249,7 @@ export function recordSudokuOutcome(userId = 'default', { difficulty, timeSecond
 
   stats.history = [record, ...(stats.history || []).slice(0, 19)];
   savePlayerStats(userId, stats);
+  trackGameEnd('Sudoku', { outcome: won ? 'WIN' : 'FINISHED', score, durationSeconds: timeSeconds, details: record.details });
   return stats;
 }
 
@@ -267,6 +274,7 @@ export function recordWaterSortOutcome(userId = 'default', { levelId, packTitle,
 
   stats.history = [record, ...(stats.history || []).slice(0, 19)];
   savePlayerStats(userId, stats);
+  trackGameEnd('Water Sort', { outcome: won ? 'WIN' : 'FINISHED', moves, stars, details: record.details });
   return stats;
 }
 

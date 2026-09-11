@@ -19,6 +19,7 @@ import {
   playSudokuVictorySound
 } from '../utils/soundEffects';
 import { recordSudokuOutcome } from '../utils/statsService';
+import { trackGameStart, trackAiUsage } from '../utils/activityTracker';
 import './Sudoku.css';
 
 const DIFFICULTY_CONFIG = {
@@ -120,6 +121,8 @@ export default function Sudoku() {
     };
     setHistory([initialSnapshot]);
     setHistoryIdx(0);
+
+    trackGameStart('Sudoku', `Difficulty: ${diff.toUpperCase()}`);
   }, [difficulty]);
 
   // Initial load
@@ -386,6 +389,7 @@ export default function Sudoku() {
       setHintsUsed(prev => prev + 1);
       setScore(prev => Math.max(0, prev - 200));
       if (soundEnabled) playSudokuHintSound();
+      trackAiUsage('Sudoku', 'AI Logical Deduction', `${hint.technique || 'Logical deduction'} for R${hint.r + 1}C${hint.c + 1}`);
     }
   };
 

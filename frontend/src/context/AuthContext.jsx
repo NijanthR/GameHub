@@ -1,9 +1,16 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { logActivity, sendHeartbeat } from '../utils/activityTracker';
 
 const AuthContext = createContext(null);
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '744551691173-9hef8f2pe0kkulqte9m2k9g3migj89aj.apps.googleusercontent.com';
+
+export const ADMIN_EMAILS = [
+  'srinijan2405@gmail.com',
+  'srinijan12405@gmail.com',
+  'nijanth.al23@bitsathy.ac.in'
+];
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
@@ -22,6 +29,27 @@ export function AuthProvider({ children }) {
       // Ignore initial warm-up errors
     }
   }, []);
+
+  // Presence Heartbeat & Session Registration when logged in
+  useEffect(() => {
+    if (!user) return;
+
+    // Log active session start if not already recorded in this tab/session
+    const sessKey = `gh_sess_logged_${user.email || 'guest'}`;
+    if (!sessionStorage.getItem(sessKey)) {
+      sessionStorage.setItem(sessKey, String(Date.now()));
+      logActivity('LOGIN', {
+        user,
+        details: `${user.provider === 'google' ? 'Google Account' : 'Guest'} session started (${user.name || user.email})`
+      });
+    }
+
+    sendHeartbeat();
+    const interval = setInterval(() => {
+      sendHeartbeat();
+    }, 45000);
+    return () => clearInterval(interval);
+  }, [user]);
 
   // Parse JWT payload safely
   function parseJwt(t) {
@@ -70,7 +98,14 @@ export function AuthProvider({ children }) {
       setToken(idToken);
       localStorage.setItem('gamehub_user', JSON.stringify(instantUser));
       localStorage.setItem('gamehub_token', idToken);
+      sessionStorage.setItem(`gh_sess_logged_${instantUser.email}`, String(Date.now()));
       setLoading(false);
+
+      // Immediately log login activity
+      logActivity('LOGIN', {
+        user: instantUser,
+        details: `Google sign-in (${instantUser.name})`
+      });
 
       // Step 2: Background sync with backend (with short 3.5s timeout)
       const controller = new AbortController();
@@ -129,7 +164,14 @@ export function AuthProvider({ children }) {
     setToken('guest_token');
     localStorage.setItem('gamehub_user', JSON.stringify(localUser));
     localStorage.setItem('gamehub_token', 'guest_token');
+    sessionStorage.setItem(`gh_sess_logged_${localUser.email}`, String(Date.now()));
     setLoading(false);
+
+    // Immediately log login activity
+    logActivity('LOGIN', {
+      user: localUser,
+      details: `Guest sign-in (${guestName})`
+    });
 
     // Background backend registration with timeout
     try {
@@ -162,11 +204,22 @@ export function AuthProvider({ children }) {
 
   // Logout
   const logout = () => {
+    if (user) {
+      logActivity('LOGOUT', { details: `User logged out (${user.name || user.email})` });
+    }
     setUser(null);
     setToken(null);
     localStorage.removeItem('gamehub_user');
     localStorage.removeItem('gamehub_token');
+    sessionStorage.removeItem('gamehub_admin_token');
   };
+
+  const isAdmin = Boolean(
+    user && (
+      ADMIN_EMAILS.includes(user.email) ||
+      sessionStorage.getItem('gamehub_admin_token')
+    )
+  );
 
   return (
     <AuthContext.Provider
@@ -179,7 +232,8 @@ export function AuthProvider({ children }) {
         loginWithGoogle,
         loginAsGuest,
         logout,
-        isAuthenticated: !!user
+        isAuthenticated: !!user,
+        isAdmin
       }}
     >
       {children}

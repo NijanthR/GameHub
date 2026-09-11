@@ -26,9 +26,11 @@ import {
   playWaterSortUndoSound
 } from '../utils/soundEffects';
 import { recordWaterSortOutcome } from '../utils/statsService';
+import { trackGameStart, trackAiUsage } from '../utils/activityTracker';
 import './WaterSort.css';
 
 const THEMES = [
+  { id: 'alchemist', name: 'Alchemist Lab', icon: '🧪', className: 'theme-alchemist' },
   { id: 'brick', name: 'Brick Wall Night', icon: '🧱', className: 'theme-brick' },
   { id: 'cyber', name: 'Cyberpunk Lab', icon: '⚡', className: 'theme-cyber' },
   { id: 'cosmic', name: 'Cosmic Nebula', icon: '🌌', className: 'theme-cosmic' },
@@ -122,6 +124,8 @@ export default function WaterSort() {
       if (isBottleComplete(b)) initialCompleted.add(idx);
     });
     setCompletedTubes(initialCompleted);
+
+    trackGameStart('Water Sort', `Level #${levelData.id || 1} · ${levelData.title || 'Laboratory'}`);
   }, [clearPourTimers]);
 
   // Load level on index/pack change
@@ -404,6 +408,7 @@ export default function WaterSort() {
       const nextMove = solution[0];
       setHint(nextMove);
       if (soundEnabled) playBottleSelectSound();
+      trackAiUsage('Water Sort', 'AI Hint', `Suggested pour: Bottle #${nextMove.from + 1} → #${nextMove.to + 1}`);
     }
   };
 
@@ -415,6 +420,7 @@ export default function WaterSort() {
 
     setIsAutoSolving(true);
     autoSolveQueueRef.current = [...solution];
+    trackAiUsage('Water Sort', 'A* Auto-Solver', `Initiated auto-solve sequence (${solution.length} moves)`);
   };
 
   // Process auto-solve queue step-by-step

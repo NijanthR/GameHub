@@ -8,7 +8,11 @@
     "name": "NIJANTH R",
     "picture": "https://lh3.googleusercontent.com/a/ACg8ocJ7wTT5g_9C0CMZ3A_5xzw7K2I081q1KX8OF2XojSWmbdqSeXWr=s96-c",
     "provider": "google",
-    "lastLogin": "2026-09-10T10:19:36.111256+00:00"
+    "lastLogin": "2026-09-11T08:59:05.500009+00:00",
+    "loginCount": 2,
+    "lastIp": "127.0.0.1",
+    "lastDevice": "Web Browser",
+    "lastActive": "2026-09-11T08:59:05.500009+00:00"
   },
   "srinijan2405@gmail.com": {
     "gamesPlayed": 0,
@@ -19,7 +23,11 @@
     "name": "N\u026a\u1d0a\u1d00\u0274\u1d1b\u029c R",
     "picture": "https://lh3.googleusercontent.com/a/ACg8ocJNmbGdko11-IOOJtQsbPPXf8GMOa9Td0ED0czftLW_V7AzzQQU=s96-c",
     "provider": "google",
-    "lastLogin": "2026-09-11T03:33:23.785889+00:00"
+    "lastLogin": "2026-09-11T09:02:15.663493+00:00",
+    "loginCount": 3,
+    "lastIp": "127.0.0.1",
+    "lastDevice": "Windows PC",
+    "lastActive": "2026-09-11T09:02:14.694439+00:00"
   },
   "guest_1789036145446@gamehub.local": {
     "id": "guest_1789036145446",
@@ -31,5 +39,20 @@
     "wins": 0,
     "createdAt": "2026-09-10T10:29:05.446446+00:00",
     "lastLogin": "2026-09-10T10:29:05.446446+00:00"
+  },
+  "srinijan12405@gmail.com": {
+    "gamesPlayed": 1,
+    "wins": 1,
+    "loginCount": 4,
+    "createdAt": "2026-09-11T08:49:32.575380+00:00",
+    "id": "101226461024194158618",
+    "email": "srinijan12405@gmail.com",
+    "name": "NIJANTH R",
+    "picture": "https://lh3.googleusercontent.com/a/ACg8ocL29wA8JniPhKWHe9xP80gU512GKKs5KmVbDEdbyaUJGQLfJSw=s96-c",
+    "provider": "google",
+    "lastLogin": "2026-09-11T09:00:05.070199+00:00",
+    "lastIp": "127.0.0.1",
+    "lastDevice": "Windows PC",
+    "lastActive": "2026-09-11T09:02:05.105523+00:00"
   }
 }

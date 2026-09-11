@@ -18,6 +18,16 @@
 }
 
 /* ── Themes ── */
+.theme-alchemist {
+  background-color: #0c1024;
+  background-image: 
+    linear-gradient(rgba(10, 14, 32, 0.76), rgba(6, 9, 22, 0.88)),
+    url('/watersort-wallpaper.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
 .theme-brick {
   background-color: #0b1129;
   background-image: 
