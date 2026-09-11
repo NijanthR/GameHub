@@ -32,7 +32,7 @@ export default function Profile() {
   const wins = pStats.wins || currentUser.wins || 0;
   const winRate = gamesPlayed > 0 ? Math.round((wins / gamesPlayed) * 100) : 0;
   
-  const xp = gamesPlayed * 120 + wins * 250 + Math.floor(best2048 / 10) + (pStats.sudokuWins || 0) * 300;
+  const xp = gamesPlayed * 120 + wins * 250 + Math.floor(best2048 / 10) + (pStats.sudokuWins || 0) * 300 + (pStats.waterSortWins || 0) * 350 + (pStats.waterSortStars || 0) * 50;
   const level = Math.floor(xp / 500) + 1;
   const currentLevelXp = xp % 500;
   const xpProgressPercent = Math.min(100, Math.round((currentLevelXp / 500) * 100));
@@ -128,6 +128,22 @@ export default function Profile() {
       icon: '🧠',
       unlocked: (pStats.sudokuWins || 0) > 0,
       reward: '+600 XP'
+    },
+    {
+      id: 'fluid_alchemist',
+      title: 'Fluid Alchemist',
+      desc: 'Complete your first Water Sort level',
+      icon: '🧪',
+      unlocked: (pStats.waterSortWins || 0) > 0,
+      reward: '+500 XP'
+    },
+    {
+      id: 'grand_sorter',
+      title: 'Grand Sorter',
+      desc: 'Earn 15 or more stars in Water Sort Puzzle',
+      icon: '⭐',
+      unlocked: (pStats.waterSortStars || 0) >= 15,
+      reward: '+800 XP'
     }
   ];
 
@@ -437,6 +453,34 @@ export default function Profile() {
                 <div className="gstat-item">
                   <span className="gstat-lbl">AI ENGINE</span>
                   <span className="gstat-val stat-gold">Smart Hints</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Water Sort Card */}
+            <div className="game-perf-card">
+              <div className="gperf-header">
+                <div className="gperf-title-wrap">
+                  <span className="gperf-icon">🧪</span>
+                  <div>
+                    <h3 className="gperf-title">Water Sort</h3>
+                    <span className="gperf-sub">Fluid Layer Alchemy</span>
+                  </div>
+                </div>
+                <Link to="/watersort" className="gperf-play-btn">Play →</Link>
+              </div>
+              <div className="gperf-stats">
+                <div className="gstat-item">
+                  <span className="gstat-lbl">SOLVED</span>
+                  <span className="gstat-val stat-green">{pStats.waterSortWins || 0}</span>
+                </div>
+                <div className="gstat-item">
+                  <span className="gstat-lbl">STARS</span>
+                  <span className="gstat-val stat-gold">⭐ {pStats.waterSortStars || 0}</span>
+                </div>
+                <div className="gstat-item">
+                  <span className="gstat-lbl">AI SOLVER</span>
+                  <span className="gstat-val stat-blue">BFS Engine</span>
                 </div>
               </div>
             </div>

@@ -26,6 +26,9 @@ export function getPlayerStats(userId = 'default') {
       sudokuGames: 0,
       sudokuWins: 0,
       sudokuBestTimes: { easy: null, medium: null, hard: null, expert: null },
+      waterSortGames: 0,
+      waterSortWins: 0,
+      waterSortStars: 0,
       history: []
     };
   }
@@ -57,6 +60,9 @@ export function getPlayerStats(userId = 'default') {
       sudokuGames: 0,
       sudokuWins: 0,
       sudokuBestTimes: { easy: null, medium: null, hard: null, expert: null },
+      waterSortGames: 0,
+      waterSortWins: 0,
+      waterSortStars: 0,
       history: []
     };
   }
@@ -239,3 +245,28 @@ export function recordSudokuOutcome(userId = 'default', { difficulty, timeSecond
   savePlayerStats(userId, stats);
   return stats;
 }
+
+// Record a completed Water Sort Puzzle round
+export function recordWaterSortOutcome(userId = 'default', { levelId, packTitle, moves, stars, timeStr, won }) {
+  const stats = getPlayerStats(userId);
+  stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
+  stats.waterSortGames = (stats.waterSortGames || 0) + 1;
+
+  if (won) {
+    stats.wins = (stats.wins || 0) + 1;
+    stats.waterSortWins = (stats.waterSortWins || 0) + 1;
+    stats.waterSortStars = (stats.waterSortStars || 0) + (stars || 0);
+  }
+
+  const record = {
+    game: 'Water Sort',
+    outcome: won ? 'WIN' : 'FINISHED',
+    details: `${packTitle || 'Level'} #${levelId} · ${stars || 1}★ · ${moves} moves (${timeStr})`,
+    timestamp: new Date().toISOString()
+  };
+
+  stats.history = [record, ...(stats.history || []).slice(0, 19)];
+  savePlayerStats(userId, stats);
+  return stats;
+}
+

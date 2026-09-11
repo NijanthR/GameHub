@@ -573,3 +573,196 @@ export function playSudokuVictorySound() {
     // Audio not allowed
   }
 }
+
+// ── Water Sort Puzzle Sound Effects ──
+
+export function playBottleSelectSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.07);
+
+    gain.gain.setValueAtTime(0.22, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.08);
+  } catch {
+    // Audio unavailable
+  }
+}
+
+export function playPourSound(durationSec = 0.5) {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    // Bubbling liquid stream sound using frequency modulated oscillator
+    const t = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(360, t);
+    osc.frequency.linearRampToValueAtTime(580, t + durationSec);
+
+    // LFO for bubbling liquid frequency modulation
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(28, t);
+    lfoGain.gain.setValueAtTime(65, t);
+
+    lfo.connect(osc.frequency);
+
+    gain.gain.setValueAtTime(0.01, t);
+    gain.gain.linearRampToValueAtTime(0.25, t + 0.05);
+    gain.gain.linearRampToValueAtTime(0.2, t + durationSec - 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + durationSec);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    lfo.start(t);
+    osc.start(t);
+    lfo.stop(t + durationSec);
+    osc.stop(t + durationSec);
+
+    // Add a secondary splash droplet layer
+    setTimeout(() => {
+      try {
+        const dropOsc = ctx.createOscillator();
+        const dropGain = ctx.createGain();
+        dropOsc.type = 'triangle';
+        dropOsc.frequency.setValueAtTime(700, ctx.currentTime);
+        dropOsc.frequency.exponentialRampToValueAtTime(320, ctx.currentTime + 0.1);
+        dropGain.gain.setValueAtTime(0.12, ctx.currentTime);
+        dropGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+        dropOsc.connect(dropGain);
+        dropGain.connect(ctx.destination);
+        dropOsc.start();
+        dropOsc.stop(ctx.currentTime + 0.1);
+      } catch {}
+    }, 150);
+  } catch {
+    // Audio unavailable
+  }
+}
+
+export function playSplashSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(520, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(260, ctx.currentTime + 0.12);
+
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.12);
+  } catch {
+    // Audio unavailable
+  }
+}
+
+export function playBottleCompleteSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    // Harmonious shimmering chord for completing a bottle
+    const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // C5, E5, G5, C6, E6
+    let t = ctx.currentTime;
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+
+      gain.gain.setValueAtTime(0.16, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.38 + idx * 0.05);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.38 + idx * 0.05);
+      t += 0.035;
+    });
+  } catch {
+    // Audio unavailable
+  }
+}
+
+export function playWaterSortVictorySound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const notes = [
+      { f: 440.00, d: 0.10 }, // A4
+      { f: 554.37, d: 0.10 }, // C#5
+      { f: 659.25, d: 0.10 }, // E5
+      { f: 880.00, d: 0.18 }, // A5
+      { f: 783.99, d: 0.12 }, // G5
+      { f: 880.00, d: 0.12 }, // A5
+      { f: 1108.73, d: 0.50 } // C#6
+    ];
+    let t = ctx.currentTime;
+    notes.forEach((n) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(n.f, t);
+      gain.gain.setValueAtTime(0.22, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + n.d);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + n.d);
+      t += n.d * 0.8;
+    });
+  } catch {
+    // Audio unavailable
+  }
+}
+
+export function playWaterSortUndoSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(280, ctx.currentTime + 0.14);
+
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.14);
+  } catch {
+    // Audio unavailable
+  }
+}
+

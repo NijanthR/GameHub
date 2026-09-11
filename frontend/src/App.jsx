@@ -10,6 +10,7 @@ import Chess from './pages/Chess';
 import FlowPuzzle from './pages/FlowPuzzle';
 import FlappyBird from './pages/FlappyBird';
 import Sudoku from './pages/Sudoku';
+import WaterSort from './pages/WaterSort';
 
 function App() {
   return (
@@ -81,6 +82,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Sudoku />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/watersort"
+            element={
+              <ProtectedRoute>
+                <WaterSort />
               </ProtectedRoute>
             }
           />

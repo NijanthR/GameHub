@@ -221,6 +221,66 @@ const games = [
       </div>
     ),
   },
+  {
+    id: 'watersort',
+    title: 'Water Sort Puzzle',
+    desc: 'Sort colorful liquids into glass bottles with fluid pour animations & AI solver!',
+    path: '/watersort',
+    badge: 'PUZZLE · 50+ LEVELS · ANIMATED',
+    icon: (
+      <div className="game-icon watersort-icon">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="wsBlue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#60a5fa"/>
+              <stop offset="100%" stopColor="#2563eb"/>
+            </linearGradient>
+            <linearGradient id="wsYellow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#fef08a"/>
+              <stop offset="100%" stopColor="#eab308"/>
+            </linearGradient>
+            <linearGradient id="wsPink" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#f472b6"/>
+              <stop offset="100%" stopColor="#ec4899"/>
+            </linearGradient>
+            <linearGradient id="wsGreen" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#bef264"/>
+              <stop offset="100%" stopColor="#84cc16"/>
+            </linearGradient>
+            <linearGradient id="wsPurple" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#c084fc"/>
+              <stop offset="100%" stopColor="#9333ea"/>
+            </linearGradient>
+          </defs>
+
+          {/* Left Bottle */}
+          <rect x="15" y="32" width="22" height="68" rx="8" stroke="rgba(255,255,255,0.85)" strokeWidth="2.5" fill="rgba(255,255,255,0.06)"/>
+          <rect x="17" y="82" width="18" height="16" rx="6" fill="url(#wsPink)"/>
+          <rect x="17" y="66" width="18" height="16" fill="url(#wsGreen)"/>
+          <rect x="17" y="50" width="18" height="16" fill="url(#wsYellow)"/>
+          <rect x="17" y="34" width="18" height="16" fill="url(#wsPurple)"/>
+
+          {/* Middle Receiving Bottle */}
+          <rect x="49" y="32" width="22" height="68" rx="8" stroke="rgba(255,255,255,0.85)" strokeWidth="2.5" fill="rgba(255,255,255,0.06)"/>
+          <rect x="51" y="50" width="18" height="48" rx="6" fill="url(#wsBlue)"/>
+          {/* Splash particles */}
+          <circle cx="56" cy="46" r="2" fill="#93c5fd"/>
+          <circle cx="64" cy="44" r="1.5" fill="#93c5fd"/>
+
+          {/* Pouring Liquid Stream from Top Right */}
+          <path d="M 83 24 L 60 50" stroke="#2563eb" strokeWidth="4.5" strokeLinecap="round"/>
+
+          {/* Tilted Source Bottle on Top Right */}
+          <g transform="translate(76, 4) rotate(42)">
+            <rect x="0" y="0" width="20" height="52" rx="7" stroke="rgba(255,255,255,0.9)" strokeWidth="2.5" fill="rgba(255,255,255,0.08)"/>
+            <rect x="2" y="32" width="16" height="18" rx="5" fill="url(#wsPurple)"/>
+            <rect x="2" y="16" width="16" height="16" fill="url(#wsGreen)"/>
+            <rect x="2" y="2" width="16" height="14" fill="url(#wsBlue)"/>
+          </g>
+        </svg>
+      </div>
+    ),
+  },
 ];
 
 export default function Dashboard() {
