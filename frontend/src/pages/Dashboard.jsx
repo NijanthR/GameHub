@@ -201,12 +201,26 @@ const games = [
       </div>
     ),
   },
-];
-
-const COMING_SOON = [
-  { name: 'Connect Four', desc: 'LLM-powered AI — coming soon!' },
-  { name: 'Minesweeper', desc: 'LLM-powered AI — coming soon!' },
-  { name: 'Sudoku', desc: 'Number puzzle engine — coming soon!' },
+  {
+    id: 'sudoku',
+    title: 'Sudoku AI',
+    desc: 'Solve deductive 9x9 number puzzles with AI hints, smart notes & 4 difficulties!',
+    path: '/sudoku',
+    badge: 'PUZZLE · AI HINT',
+    icon: (
+      <div className="game-icon sudoku-icon sudoku-wallpaper-icon">
+        <img
+          src="/sudoku-wallpaper.jpg"
+          alt="Sudoku AI"
+          className="sudoku-card-wallpaper"
+        />
+        <div className="sudoku-card-wallpaper-overlay">
+          <span className="sudoku-card-digit">9</span>
+          <span className="sudoku-card-sparkle">✨</span>
+        </div>
+      </div>
+    ),
+  },
 ];
 
 export default function Dashboard() {
@@ -217,8 +231,7 @@ export default function Dashboard() {
 
   const q = query.toLowerCase().trim();
   const filteredGames = games.filter(g => g.title.toLowerCase().includes(q) || g.desc.toLowerCase().includes(q));
-  const filteredSoon  = COMING_SOON.filter(g => g.name.toLowerCase().includes(q) || g.desc.toLowerCase().includes(q));
-  const noResults = q && filteredGames.length === 0 && filteredSoon.length === 0;
+  const noResults = q && filteredGames.length === 0;
 
   const handlePlay = (game) => {
     setLoading(game.title);
@@ -327,7 +340,6 @@ export default function Dashboard() {
         <div className="games-grid">
           {filteredGames.map((game) => (
             <div key={game.id} className="game-card">
-              <div className="card-badge">{game.badge}</div>
               <div className="card-preview">{game.icon}</div>
               <div className="card-body">
                 <h2 className="card-title">{game.title}</h2>
@@ -342,21 +354,6 @@ export default function Dashboard() {
                   </svg>
                   Play Now
                 </button>
-              </div>
-            </div>
-          ))}
-
-          {/* Coming soon cards */}
-          {filteredSoon.map((g) => (
-            <div key={g.name} className="game-card coming-soon">
-              <div className="card-badge soon">Coming Soon</div>
-              <div className="card-preview soon-preview">
-                <span className="soon-icon">🔒</span>
-              </div>
-              <div className="card-body">
-                <h2 className="card-title">{g.name}</h2>
-                <p className="card-desc">{g.desc}</p>
-                <button className="btn-play disabled" disabled>Locked</button>
               </div>
             </div>
           ))}

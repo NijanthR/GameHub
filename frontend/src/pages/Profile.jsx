@@ -32,7 +32,7 @@ export default function Profile() {
   const wins = pStats.wins || currentUser.wins || 0;
   const winRate = gamesPlayed > 0 ? Math.round((wins / gamesPlayed) * 100) : 0;
   
-  const xp = gamesPlayed * 120 + wins * 250 + Math.floor(best2048 / 10);
+  const xp = gamesPlayed * 120 + wins * 250 + Math.floor(best2048 / 10) + (pStats.sudokuWins || 0) * 300;
   const level = Math.floor(xp / 500) + 1;
   const currentLevelXp = xp % 500;
   const xpProgressPercent = Math.min(100, Math.round((currentLevelXp / 500) * 100));
@@ -120,6 +120,14 @@ export default function Profile() {
       icon: '🐥',
       unlocked: (pStats.flappyBest || 0) >= 10,
       reward: '+500 XP'
+    },
+    {
+      id: 'sudoku_prodigy',
+      title: 'Sudoku Prodigy',
+      desc: 'Complete a full 9x9 Sudoku puzzle',
+      icon: '🧠',
+      unlocked: (pStats.sudokuWins || 0) > 0,
+      reward: '+600 XP'
     }
   ];
 
@@ -401,6 +409,34 @@ export default function Profile() {
                 <div className="gstat-item">
                   <span className="gstat-lbl">COINS BANK</span>
                   <span className="gstat-val stat-amber">🪙 {pStats.flappyCoins || 0}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Sudoku AI Card */}
+            <div className="game-perf-card">
+              <div className="gperf-header">
+                <div className="gperf-title-wrap">
+                  <span className="gperf-icon">🧠</span>
+                  <div>
+                    <h3 className="gperf-title">Sudoku AI</h3>
+                    <span className="gperf-sub">Neural Matrix Puzzle</span>
+                  </div>
+                </div>
+                <Link to="/sudoku" className="gperf-play-btn">Play →</Link>
+              </div>
+              <div className="gperf-stats">
+                <div className="gstat-item">
+                  <span className="gstat-lbl">SOLVED</span>
+                  <span className="gstat-val stat-green">{pStats.sudokuWins || 0}</span>
+                </div>
+                <div className="gstat-item">
+                  <span className="gstat-lbl">MATCHES</span>
+                  <span className="gstat-val">{pStats.sudokuGames || 0}</span>
+                </div>
+                <div className="gstat-item">
+                  <span className="gstat-lbl">AI ENGINE</span>
+                  <span className="gstat-val stat-gold">Smart Hints</span>
                 </div>
               </div>
             </div>

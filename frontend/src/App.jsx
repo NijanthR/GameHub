@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import Chess from './pages/Chess';
 import FlowPuzzle from './pages/FlowPuzzle';
 import FlappyBird from './pages/FlappyBird';
+import Sudoku from './pages/Sudoku';
 
 function App() {
   return (
@@ -72,6 +73,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <FlappyBird />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sudoku"
+            element={
+              <ProtectedRoute>
+                <Sudoku />
               </ProtectedRoute>
             }
           />

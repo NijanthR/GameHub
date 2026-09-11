@@ -23,6 +23,9 @@ export function getPlayerStats(userId = 'default') {
       chessWins: 0,
       chessLosses: 0,
       chessDraws: 0,
+      sudokuGames: 0,
+      sudokuWins: 0,
+      sudokuBestTimes: { easy: null, medium: null, hard: null, expert: null },
       history: []
     };
   }
@@ -32,6 +35,9 @@ export function getPlayerStats(userId = 'default') {
     const local2048Best = parseInt(localStorage.getItem('g2048_best') || '0', 10);
     if (local2048Best > (parsed.g2048BestScore || 0)) {
       parsed.g2048BestScore = local2048Best;
+    }
+    if (!parsed.sudokuBestTimes) {
+      parsed.sudokuBestTimes = { easy: null, medium: null, hard: null, expert: null };
     }
     return parsed;
   } catch {
@@ -48,6 +54,9 @@ export function getPlayerStats(userId = 'default') {
       g2048BestScore: 0,
       g2048HighestTile: 0,
       g2048Wins: 0,
+      sudokuGames: 0,
+      sudokuWins: 0,
+      sudokuBestTimes: { easy: null, medium: null, hard: null, expert: null },
       history: []
     };
   }
@@ -189,6 +198,40 @@ export function recordFlappyOutcome(userId = 'default', { score, bestScore, coin
     game: 'Flappy Bird',
     outcome: score >= 10 ? 'WIN' : 'FINISHED',
     details: `${mode || 'Classic'} · Score: ${score} (Best: ${stats.flappyBest})`,
+    timestamp: new Date().toISOString()
+  };
+
+  stats.history = [record, ...(stats.history || []).slice(0, 19)];
+  savePlayerStats(userId, stats);
+  return stats;
+}
+
+// Record a completed Sudoku Game
+export function recordSudokuOutcome(userId = 'default', { difficulty, timeSeconds, timeStr, mistakes, hintsUsed, won, score }) {
+  const stats = getPlayerStats(userId);
+  stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
+  stats.sudokuGames = (stats.sudokuGames || 0) + 1;
+
+  if (!stats.sudokuBestTimes) {
+    stats.sudokuBestTimes = { easy: null, medium: null, hard: null, expert: null };
+  }
+
+  if (won) {
+    stats.wins = (stats.wins || 0) + 1;
+    stats.sudokuWins = (stats.sudokuWins || 0) + 1;
+
+    // Update best time for this difficulty
+    const prevBest = stats.sudokuBestTimes[difficulty];
+    if (!prevBest || timeSeconds < prevBest) {
+      stats.sudokuBestTimes[difficulty] = timeSeconds;
+    }
+  }
+
+  const diffLabel = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+  const record = {
+    game: 'Sudoku',
+    outcome: won ? 'WIN' : 'FINISHED',
+    details: `${diffLabel} · Time: ${timeStr} · Mistakes: ${mistakes} · Score: ${score || 0}`,
     timestamp: new Date().toISOString()
   };
 

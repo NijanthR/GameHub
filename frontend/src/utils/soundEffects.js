@@ -388,3 +388,188 @@ export function playHighScoreFanfare() {
     // Audio not allowed
   }
 }
+
+// ── Sudoku Sound Effects ──
+
+export function playSudokuPlaceSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(480, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(720, ctx.currentTime + 0.06);
+
+    gain.gain.setValueAtTime(0.22, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.07);
+  } catch {
+    // Audio not allowed
+  }
+}
+
+export function playSudokuNoteSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(900, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.035);
+
+    gain.gain.setValueAtTime(0.09, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.035);
+  } catch {
+    // Audio not allowed
+  }
+}
+
+export function playSudokuEraseSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(320, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(140, ctx.currentTime + 0.08);
+
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.08);
+  } catch {
+    // Audio not allowed
+  }
+}
+
+export function playSudokuErrorSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(160, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.18);
+
+    gain.gain.setValueAtTime(0.24, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.18);
+  } catch {
+    // Audio not allowed
+  }
+}
+
+export function playSudokuHintSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const notes = [587.33, 739.99, 880.00, 1174.66]; // D5, F#5, A5, D6
+    let t = ctx.currentTime;
+    notes.forEach((freq) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t);
+
+      gain.gain.setValueAtTime(0.18, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.18);
+      t += 0.06;
+    });
+  } catch {
+    // Audio not allowed
+  }
+}
+
+export function playSudokuBlockCompleteSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const chord = [440.00, 554.37, 659.25, 880.00]; // A major
+    let t = ctx.currentTime;
+    chord.forEach((freq) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+
+      gain.gain.setValueAtTime(0.15, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.35);
+    });
+  } catch {
+    // Audio not allowed
+  }
+}
+
+export function playSudokuVictorySound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const notes = [
+      { f: 523.25, d: 0.12 }, // C5
+      { f: 659.25, d: 0.12 }, // E5
+      { f: 783.99, d: 0.12 }, // G5
+      { f: 1046.50, d: 0.2 }, // C6
+      { f: 880.00, d: 0.15 }, // A5
+      { f: 1046.50, d: 0.15 },// C6
+      { f: 1318.51, d: 0.45 } // E6
+    ];
+    let t = ctx.currentTime;
+    notes.forEach((n) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(n.f, t);
+      gain.gain.setValueAtTime(0.24, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + n.d);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + n.d);
+      t += n.d * 0.85;
+    });
+  } catch {
+    // Audio not allowed
+  }
+}
