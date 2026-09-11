@@ -37,9 +37,55 @@ export default function Login() {
     }
   }, [user, navigate]);
 
-  // Initialize Google Identity Services
+  // Initialize Google Identity Services with polling for async script load
   useEffect(() => {
-    if (window.google?.accounts?.id && googleBtnRef.current && authMode !== 'guest') {
+    if (authMode === 'guest') return;
+
+    let attempts = 0;
+    const maxAttempts = 25; // 5 seconds of polling
+
+    const renderGoogleBtn = () => {
+      if (window.google?.accounts?.id && googleBtnRef.current) {
+        try {
+          window.google.accounts.id.initialize({
+            client_id: googleClientId,
+            callback: (response) => {
+              loginWithGoogle(response);
+            },
+            auto_select: false,
+            cancel_on_tap_outside: true,
+          });
+
+          googleBtnRef.current.innerHTML = '';
+          window.google.accounts.id.renderButton(googleBtnRef.current, {
+            theme: 'outline',
+            size: 'large',
+            shape: 'rectangular',
+            width: 360,
+            text: 'continue_with',
+            logo_alignment: 'center',
+          });
+          return true;
+        } catch (err) {
+          console.warn('Google button render note:', err);
+        }
+      }
+      return false;
+    };
+
+    if (!renderGoogleBtn()) {
+      const interval = setInterval(() => {
+        attempts++;
+        if (renderGoogleBtn() || attempts >= maxAttempts) {
+          clearInterval(interval);
+        }
+      }, 200);
+      return () => clearInterval(interval);
+    }
+  }, [googleClientId, loginWithGoogle, authMode]);
+
+  const handleCustomGooglePrompt = () => {
+    if (window.google?.accounts?.id) {
       try {
         window.google.accounts.id.initialize({
           client_id: googleClientId,
@@ -49,25 +95,10 @@ export default function Login() {
           auto_select: false,
           cancel_on_tap_outside: true,
         });
-
-        googleBtnRef.current.innerHTML = '';
-        window.google.accounts.id.renderButton(googleBtnRef.current, {
-          theme: 'outline',
-          size: 'large',
-          shape: 'rectangular',
-          width: 360,
-          text: 'continue_with',
-          logo_alignment: 'center',
-        });
+        window.google.accounts.id.prompt();
       } catch (err) {
-        console.error('Google Sign-in error:', err);
+        console.warn('Google prompt note:', err);
       }
-    }
-  }, [googleClientId, loginWithGoogle, authMode]);
-
-  const handleCustomGooglePrompt = () => {
-    if (window.google?.accounts?.id) {
-      window.google.accounts.id.prompt();
     }
   };
 

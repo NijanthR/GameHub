@@ -14,7 +14,16 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Parse JWT helper
+  // Warm-up backend ping on app startup (prevents Render cold start delays)
+  useEffect(() => {
+    try {
+      fetch(`${API_URL}/api/health`, { method: 'GET', mode: 'cors' }).catch(() => {});
+    } catch {
+      // Ignore initial warm-up errors
+    }
+  }, []);
+
+  // Parse JWT payload safely
   function parseJwt(t) {
     try {
       const base64Url = t.split('.')[1];
@@ -31,104 +40,123 @@ export function AuthProvider({ children }) {
     }
   }
 
-  // Handle Google Login Credential Response
+  // Handle Google Login Credential Response with Instant Optimistic Authentication
   const loginWithGoogle = async (credentialResponse) => {
     setLoading(true);
     setError(null);
     try {
-      const idToken = credentialResponse.credential;
-      const decoded = parseJwt(idToken);
+      const idToken = credentialResponse?.credential;
+      if (!idToken) {
+        throw new Error('No Google credentials received');
+      }
 
-      const userInfo = decoded ? {
+      const decoded = parseJwt(idToken);
+      if (!decoded) {
+        throw new Error('Unable to parse Google token');
+      }
+
+      // Step 1: INSTANT LOGIN (Zero waiting / No spinner delay)
+      const instantUser = {
         id: decoded.sub,
         email: decoded.email,
-        name: decoded.name,
-        picture: decoded.picture
-      } : null;
+        name: decoded.name || decoded.given_name || 'Player',
+        picture: decoded.picture || null,
+        provider: 'google',
+        gamesPlayed: 0,
+        wins: 0
+      };
 
-      // Send to backend for server-side verification and session token
-      let backendSuccess = false;
-      try {
-        const res = await fetch(`${API_URL}/api/auth/google`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ credential: idToken, userInfo })
+      setUser(instantUser);
+      setToken(idToken);
+      localStorage.setItem('gamehub_user', JSON.stringify(instantUser));
+      localStorage.setItem('gamehub_token', idToken);
+      setLoading(false);
+
+      // Step 2: Background sync with backend (with short 3.5s timeout)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+      fetch(`${API_URL}/api/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: idToken, userInfo: instantUser }),
+        signal: controller.signal
+      })
+        .then(async (res) => {
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            const data = await res.json();
+            if (data?.user) {
+              setUser(data.user);
+              localStorage.setItem('gamehub_user', JSON.stringify(data.user));
+            }
+            if (data?.token) {
+              setToken(data.token);
+              localStorage.setItem('gamehub_token', data.token);
+            }
+          }
+        })
+        .catch((backendErr) => {
+          clearTimeout(timeoutId);
+          console.warn('Backend sync note (using fast local auth session):', backendErr.message);
         });
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data.user);
-          setToken(data.token);
-          localStorage.setItem('gamehub_user', JSON.stringify(data.user));
-          localStorage.setItem('gamehub_token', data.token);
-          backendSuccess = true;
-        }
-      } catch (backendErr) {
-        console.warn('Backend verification fallback:', backendErr.message);
-      }
 
-      // If backend was unreachable but Google gave valid JWT
-      if (!backendSuccess && userInfo) {
-        const localUser = {
-          ...userInfo,
-          provider: 'google',
-          gamesPlayed: 0,
-          wins: 0
-        };
-        setUser(localUser);
-        setToken(idToken);
-        localStorage.setItem('gamehub_user', JSON.stringify(localUser));
-        localStorage.setItem('gamehub_token', idToken);
-      }
     } catch (err) {
       console.error('Google login error:', err);
-      setError(err.message || 'Google login failed');
-    } finally {
+      setError(err.message || 'Google sign-in failed');
       setLoading(false);
     }
   };
 
-  // Guest Login
+  // Fast Guest Login
   const loginAsGuest = async (name) => {
     setLoading(true);
     setError(null);
-    try {
-      try {
-        const res = await fetch(`${API_URL}/api/auth/guest`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data.user);
-          setToken(data.token);
-          localStorage.setItem('gamehub_user', JSON.stringify(data.user));
-          localStorage.setItem('gamehub_token', data.token);
-          return;
-        }
-      } catch (backendErr) {
-        console.warn('Backend guest login fallback:', backendErr.message);
-      }
 
-      // Local fallback
-      const guestName = name?.trim() || `Player_${Math.floor(1000 + Math.random() * 9000)}`;
-      const localUser = {
-        id: `guest_${Date.now()}`,
-        name: guestName,
-        email: `guest@gamehub.local`,
-        picture: null,
-        provider: 'guest',
-        gamesPlayed: 0,
-        wins: 0
-      };
-      setUser(localUser);
-      setToken('guest_token');
-      localStorage.setItem('gamehub_user', JSON.stringify(localUser));
-      localStorage.setItem('gamehub_token', 'guest_token');
-    } catch (err) {
-      setError(err.message || 'Guest login failed');
-    } finally {
-      setLoading(false);
+    const guestName = name?.trim() || `Player_${Math.floor(1000 + Math.random() * 9000)}`;
+    const localUser = {
+      id: `guest_${Date.now()}`,
+      name: guestName,
+      email: `guest_${Date.now()}@gamehub.local`,
+      picture: null,
+      provider: 'guest',
+      gamesPlayed: 0,
+      wins: 0
+    };
+
+    // Instant local activation
+    setUser(localUser);
+    setToken('guest_token');
+    localStorage.setItem('gamehub_user', JSON.stringify(localUser));
+    localStorage.setItem('gamehub_token', 'guest_token');
+    setLoading(false);
+
+    // Background backend registration with timeout
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+      fetch(`${API_URL}/api/auth/guest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: guestName }),
+        signal: controller.signal
+      })
+        .then(async (res) => {
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            const data = await res.json();
+            if (data?.user) {
+              setUser(data.user);
+              localStorage.setItem('gamehub_user', JSON.stringify(data.user));
+            }
+          }
+        })
+        .catch(() => {
+          clearTimeout(timeoutId);
+        });
+    } catch {
+      // Ignored
     }
   };
 
