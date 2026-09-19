@@ -30,6 +30,10 @@ export function getPlayerStats(userId = 'default') {
       waterSortGames: 0,
       waterSortWins: 0,
       waterSortStars: 0,
+      dinoGames: 0,
+      dinoWins: 0,
+      dinoBestScore: parseInt(localStorage.getItem('gamehub_dino_best') || '0', 10),
+      dinoCoins: parseInt(localStorage.getItem('gamehub_dino_coins') || '0', 10),
       history: []
     };
   }
@@ -39,6 +43,10 @@ export function getPlayerStats(userId = 'default') {
     const local2048Best = parseInt(localStorage.getItem('g2048_best') || '0', 10);
     if (local2048Best > (parsed.g2048BestScore || 0)) {
       parsed.g2048BestScore = local2048Best;
+    }
+    const localDinoBest = parseInt(localStorage.getItem('gamehub_dino_best') || '0', 10);
+    if (localDinoBest > (parsed.dinoBestScore || 0)) {
+      parsed.dinoBestScore = localDinoBest;
     }
     if (!parsed.sudokuBestTimes) {
       parsed.sudokuBestTimes = { easy: null, medium: null, hard: null, expert: null };
@@ -64,6 +72,10 @@ export function getPlayerStats(userId = 'default') {
       waterSortGames: 0,
       waterSortWins: 0,
       waterSortStars: 0,
+      dinoGames: 0,
+      dinoWins: 0,
+      dinoBestScore: 0,
+      dinoCoins: 0,
       history: []
     };
   }
@@ -277,4 +289,35 @@ export function recordWaterSortOutcome(userId = 'default', { levelId, packTitle,
   trackGameEnd('Water Sort', { outcome: won ? 'WIN' : 'FINISHED', moves, stars, details: record.details });
   return stats;
 }
+
+// Record a completed Chrome Dino 3D match
+export function recordDinoOutcome(userId = 'default', { score, bestScore, coins, mode, obstaclesPassed }) {
+  const stats = getPlayerStats(userId);
+  stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
+  stats.dinoGames = (stats.dinoGames || 0) + 1;
+  stats.dinoBestScore = Math.max(stats.dinoBestScore || 0, score, bestScore || 0);
+  stats.dinoCoins = (stats.dinoCoins || 0) + (coins || 0);
+
+  // Consider 1000+ points or 50+ obstacles passed a victory
+  const won = score >= 1000 || obstaclesPassed >= 50;
+  if (won) {
+    stats.wins = (stats.wins || 0) + 1;
+    stats.dinoWins = (stats.dinoWins || 0) + 1;
+  }
+
+  const record = {
+    game: 'Chrome Dino 3D',
+    outcome: won ? 'WIN' : 'FINISHED',
+    details: `${mode || 'Classic'} · Distance: ${score}m (Best: ${stats.dinoBestScore}m) · ${coins || 0} Coins`,
+    timestamp: new Date().toISOString()
+  };
+
+  stats.history = [record, ...(stats.history || []).slice(0, 19)];
+  savePlayerStats(userId, stats);
+  localStorage.setItem('gamehub_dino_best', String(stats.dinoBestScore));
+  localStorage.setItem('gamehub_dino_coins', String(stats.dinoCoins));
+  trackGameEnd('Chrome Dino 3D', { outcome: record.outcome, score, details: record.details });
+  return stats;
+}
+
 

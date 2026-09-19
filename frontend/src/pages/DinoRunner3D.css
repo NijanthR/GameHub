@@ -1,0 +1,595 @@
+/* ── 3D Chrome Dino Runner Full Screen Stylesheet ── */
+
+.dino-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #090d16;
+  color: #f8fafc;
+  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* 3D WebGL Viewport */
+.dino-viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  outline: none;
+}
+
+/* 100-pt Milestone Flash Effect */
+.milestone-flash .dino-score-val {
+  animation: milestonePulse 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes milestonePulse {
+  0% {
+    color: #22d3ee;
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+  }
+  100% {
+    color: #fde047;
+    transform: scale(1.15);
+    text-shadow: 0 0 20px rgba(253, 224, 71, 0.9);
+  }
+}
+
+/* Header & HUD Bar */
+.dino-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  pointer-events: auto;
+  background: linear-gradient(180deg, rgba(9, 13, 22, 0.75) 0%, rgba(9, 13, 22, 0) 100%);
+  backdrop-filter: blur(8px);
+}
+
+.dino-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dino-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dino-back-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+  transform: translateY(-1px);
+}
+
+.dino-title-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #38bdf8;
+}
+
+/* Score Panel with Retro Font */
+.dino-score-panel {
+  display: flex;
+  align-items: baseline;
+  gap: 1.8rem;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.5rem 1.6rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.dino-score-group {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.dino-score-label {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.dino-score-val {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #f8fafc;
+  letter-spacing: 0.1em;
+}
+
+.dino-high-val {
+  color: #94a3b8;
+}
+
+.current-score .dino-score-val {
+  color: #38bdf8;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+}
+
+.dino-unit {
+  font-size: 0.9rem;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.coins-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'Outfit', sans-serif;
+  color: #fbbf24;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Controls on Right */
+.dino-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dino-tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f1f5f9;
+  padding: 0.45rem 0.9rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dino-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.dino-tool-btn.active-ai {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(59, 130, 246, 0.4));
+  border-color: #a855f7;
+  color: #f3e8ff;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+}
+
+.dino-fps-badge {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #4ade80;
+  font-family: monospace;
+}
+
+/* Powerup Banner */
+.dino-powerup-pill {
+  position: absolute;
+  top: 5.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  padding: 0.6rem 1.4rem;
+  border-radius: 9999px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  animation: powerupFloat 2s ease-in-out infinite alternate;
+}
+
+.dino-powerup-pill.shield {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.85), rgba(59, 130, 246, 0.85));
+  border: 2px solid #22d3ee;
+  color: #ecfeff;
+}
+
+.dino-powerup-pill.boost {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.85), rgba(249, 115, 22, 0.85));
+  border: 2px solid #f87171;
+  color: #fff1f2;
+}
+
+.dino-powerup-pill.slowmo {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.85), rgba(168, 85, 247, 0.85));
+  border: 2px solid #c084fc;
+  color: #faf5ff;
+}
+
+@keyframes powerupFloat {
+  0% { transform: translate(-50%, 0); }
+  100% { transform: translate(-50%, -6px); }
+}
+
+/* Modal Overlays (Idle & Game Over) */
+.dino-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 6, 14, 0.72);
+  backdrop-filter: blur(14px);
+  padding: 1.5rem;
+}
+
+.dino-modal-card {
+  width: 100%;
+  max-width: 580px;
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 28px;
+  padding: 2.25rem 2.5rem;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.65), 0 0 40px rgba(56, 189, 248, 0.15);
+  text-align: center;
+  animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalPop {
+  0% { opacity: 0; transform: scale(0.92) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.dino-hero-icon {
+  font-size: 3.8rem;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 20px rgba(74, 222, 128, 0.4));
+  animation: dinoWiggle 2.5s ease-in-out infinite;
+}
+
+@keyframes dinoWiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-6deg) scale(1.05); }
+  75% { transform: rotate(6deg) scale(1.05); }
+}
+
+.dino-game-title {
+  font-size: 2.1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.3rem;
+}
+
+.dino-game-subtitle {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Skin Selector in Modal */
+.dino-skin-selector {
+  margin-bottom: 1.3rem;
+  text-align: left;
+}
+
+.selector-title {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  margin-bottom: 0.6rem;
+}
+
+.skins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+  gap: 0.6rem;
+}
+
+.skin-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.6rem 0.4rem;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.skin-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.skin-btn.active {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2));
+  border-color: #38bdf8;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+}
+
+.skin-icon {
+  font-size: 1.5rem;
+}
+
+.skin-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.skin-tag {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #38bdf8;
+  opacity: 0.85;
+}
+
+/* Mode Selector */
+.dino-mode-selector {
+  margin-bottom: 1.6rem;
+  text-align: left;
+}
+
+.modes-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.6rem 0.8rem;
+  color: #e2e8f0;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.mode-btn.active {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+  border-color: #c084fc;
+  box-shadow: 0 0 16px rgba(192, 132, 252, 0.3);
+}
+
+.mode-icon {
+  font-size: 1.4rem;
+}
+
+.mode-text strong {
+  display: block;
+  font-size: 0.8rem;
+}
+
+.mode-text small {
+  display: block;
+  font-size: 0.65rem;
+  color: #94a3b8;
+  line-height: 1.2;
+}
+
+/* Start / Replay Button */
+.dino-start-btn,
+.dino-replay-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #6366f1 100%);
+  border: none;
+  color: #ffffff;
+  padding: 1rem 1.8rem;
+  border-radius: 16px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.45);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dino-start-btn:hover,
+.dino-replay-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(14, 165, 233, 0.6);
+  background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 50%, #818cf8 100%);
+}
+
+.dino-quick-tips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.dino-quick-tips b {
+  color: #f1f5f9;
+}
+
+/* Game Over Card */
+.gameover-skull {
+  font-size: 3.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.gameover-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #ef4444;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.4rem;
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.gameover-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.8rem;
+}
+
+.g-stat-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.g-stat-box.highlight {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.g-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #94a3b8;
+  letter-spacing: 0.06em;
+}
+
+.g-val {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #f8fafc;
+}
+
+.g-stat-box.highlight .g-val {
+  color: #38bdf8;
+}
+
+.gameover-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.dino-profile-link {
+  display: inline-block;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.dino-profile-link:hover {
+  color: #38bdf8;
+}
+
+/* Touch Controls for Mobile / Tablets */
+.dino-touch-controls {
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
+  right: 0;
+  z-index: 25;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+  pointer-events: none;
+}
+
+.touch-btn {
+  pointer-events: auto;
+  width: 110px;
+  height: 60px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  color: #f8fafc;
+  font-size: 0.95rem;
+  font-weight: 800;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.touch-btn:active {
+  transform: scale(0.92);
+  background: rgba(56, 189, 248, 0.3);
+  border-color: #38bdf8;
+}
+
+/* Responsive Rules */
+@media (max-width: 768px) {
+  .dino-header {
+    padding: 0.8rem 1rem;
+  }
+  .dino-title-badge {
+    display: none;
+  }
+  .dino-score-panel {
+    padding: 0.4rem 1rem;
+    gap: 1rem;
+  }
+  .dino-score-val {
+    font-size: 1.25rem;
+  }
+  .dino-modal-card {
+    padding: 1.5rem;
+  }
+  .skins-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

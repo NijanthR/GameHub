@@ -32,7 +32,7 @@ export default function Profile() {
   const wins = pStats.wins || currentUser.wins || 0;
   const winRate = gamesPlayed > 0 ? Math.round((wins / gamesPlayed) * 100) : 0;
   
-  const xp = gamesPlayed * 120 + wins * 250 + Math.floor(best2048 / 10) + (pStats.sudokuWins || 0) * 300 + (pStats.waterSortWins || 0) * 350 + (pStats.waterSortStars || 0) * 50;
+  const xp = gamesPlayed * 120 + wins * 250 + Math.floor(best2048 / 10) + (pStats.sudokuWins || 0) * 300 + (pStats.waterSortWins || 0) * 350 + (pStats.waterSortStars || 0) * 50 + (pStats.dinoWins || 0) * 300 + Math.floor((pStats.dinoBestScore || 0) / 10) + (pStats.dinoCoins || 0) * 5;
   const level = Math.floor(xp / 500) + 1;
   const currentLevelXp = xp % 500;
   const xpProgressPercent = Math.min(100, Math.round((currentLevelXp / 500) * 100));
@@ -144,6 +144,22 @@ export default function Profile() {
       icon: '⭐',
       unlocked: (pStats.waterSortStars || 0) >= 15,
       reward: '+800 XP'
+    },
+    {
+      id: 'dino_runner',
+      title: 'Prehistoric Sprinter',
+      desc: 'Survive 500m in 3D Chrome Dino Runner',
+      icon: '🦖',
+      unlocked: (pStats.dinoBestScore || 0) >= 500,
+      reward: '+500 XP'
+    },
+    {
+      id: 'dino_champion',
+      title: 'Apex Predator',
+      desc: 'Reach 1,500m distance in 3D Chrome Dino Runner',
+      icon: '⚡',
+      unlocked: (pStats.dinoBestScore || 0) >= 1500,
+      reward: '+1000 XP'
     }
   ];
 
@@ -483,6 +499,34 @@ export default function Profile() {
                 <div className="gstat-item">
                   <span className="gstat-lbl">AI SOLVER</span>
                   <span className="gstat-val stat-blue">A* Solver</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Chrome Dino 3D Card */}
+            <div className="game-perf-card">
+              <div className="gperf-header">
+                <div className="gperf-title-wrap">
+                  <span className="gperf-icon">🦖</span>
+                  <div>
+                    <h3 className="gperf-title">Chrome Dino 3D</h3>
+                    <span className="gperf-sub">T-Rex Runner 3D</span>
+                  </div>
+                </div>
+                <Link to="/dino" className="gperf-play-btn">Play →</Link>
+              </div>
+              <div className="gperf-stats">
+                <div className="gstat-item">
+                  <span className="gstat-lbl">BEST DISTANCE</span>
+                  <span className="gstat-val stat-gold">{pStats.dinoBestScore || 0}m</span>
+                </div>
+                <div className="gstat-item">
+                  <span className="gstat-lbl">RUNS</span>
+                  <span className="gstat-val">{pStats.dinoGames || 0}</span>
+                </div>
+                <div className="gstat-item">
+                  <span className="gstat-lbl">COINS BANK</span>
+                  <span className="gstat-val stat-amber">🪙 {pStats.dinoCoins || 0}</span>
                 </div>
               </div>
             </div>

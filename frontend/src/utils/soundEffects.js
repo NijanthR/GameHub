@@ -766,3 +766,186 @@ export function playWaterSortUndoSound() {
   }
 }
 
+// ── 3D Chrome Dino / T-Rex Runner Sound Effects ──
+
+export function playDinoJumpSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(150, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.12);
+
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.12);
+  } catch {}
+}
+
+export function playDinoMilestoneSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    // Classic authentic Chrome Dino double beep (B5 -> E6)
+    const t = ctx.currentTime;
+    
+    // First beep
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = 'square';
+    osc1.frequency.setValueAtTime(880, t);
+    gain1.gain.setValueAtTime(0.16, t);
+    gain1.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(t);
+    osc1.stop(t + 0.08);
+
+    // Second higher beep
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = 'square';
+    osc2.frequency.setValueAtTime(1320, t + 0.1);
+    gain2.gain.setValueAtTime(0.18, t + 0.1);
+    gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(t + 0.1);
+    osc2.stop(t + 0.22);
+  } catch {}
+}
+
+export function playDinoDuckSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(320, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.1);
+
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  } catch {}
+}
+
+export function playDinoHitSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    // Crunchy impact noise
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(140, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(25, ctx.currentTime + 0.25);
+
+    gain.gain.setValueAtTime(0.35, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.25);
+  } catch {}
+}
+
+export function playDinoPowerupSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const notes = [440, 554.37, 659.25, 880, 1108.73];
+    let t = ctx.currentTime;
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.18, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.12);
+      t += 0.045;
+    });
+  } catch {}
+}
+
+export function playDinoRoarSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    // Resonant synthesized roar with dual modulated oscillators
+    const t = ctx.currentTime;
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc1.type = 'sawtooth';
+    osc2.type = 'triangle';
+
+    osc1.frequency.setValueAtTime(90, t);
+    osc1.frequency.exponentialRampToValueAtTime(180, t + 0.2);
+    osc1.frequency.exponentialRampToValueAtTime(60, t + 0.6);
+
+    osc2.frequency.setValueAtTime(135, t);
+    osc2.frequency.exponentialRampToValueAtTime(270, t + 0.2);
+    osc2.frequency.exponentialRampToValueAtTime(75, t + 0.6);
+
+    gain.gain.setValueAtTime(0.01, t);
+    gain.gain.linearRampToValueAtTime(0.28, t + 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc1.start(t);
+    osc2.start(t);
+    osc1.stop(t + 0.6);
+    osc2.stop(t + 0.6);
+  } catch {}
+}
+
+export function playDinoCollectSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(987.77, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1567.98, ctx.currentTime + 0.09);
+
+    gain.gain.setValueAtTime(0.22, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.09);
+  } catch {}
+}
+
+

@@ -11,6 +11,7 @@ import FlowPuzzle from './pages/FlowPuzzle';
 import FlappyBird from './pages/FlappyBird';
 import Sudoku from './pages/Sudoku';
 import WaterSort from './pages/WaterSort';
+import DinoRunner3D from './pages/DinoRunner3D';
 import AdminPortal from './pages/AdminPortal';
 
 function App() {
@@ -38,6 +39,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dino"
+            element={
+              <ProtectedRoute>
+                <DinoRunner3D />
               </ProtectedRoute>
             }
           />

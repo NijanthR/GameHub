@@ -235,6 +235,26 @@ const games = [
       </div>
     ),
   },
+  {
+    id: 'dino',
+    title: 'Chrome Dino 3D',
+    desc: 'No Internet T-Rex runner reimagined with smooth 3D animations, power-ups & AI autopilot!',
+    path: '/dino',
+    badge: '3D ARCADE · AI AUTOPILOT',
+    icon: (
+      <div className="game-icon dino-icon dino-wallpaper-icon">
+        <img
+          src="/dino-wallpaper.jpg"
+          alt="Chrome Dino 3D"
+          className="dino-card-wallpaper"
+        />
+        <div className="dino-card-wallpaper-overlay">
+          <span className="dino-card-t-rex">🦖</span>
+          <span className="dino-card-bolt">⚡</span>
+        </div>
+      </div>
+    ),
+  },
 ];
 
 export default function Dashboard() {
